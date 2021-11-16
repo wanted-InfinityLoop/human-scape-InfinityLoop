@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_crontab",
     "core",
     "clinics",
 ]
@@ -110,3 +111,9 @@ CORS_ALLOW_HEADERS = (
     "x-csrftoken",
     "x-requested-with",
 )
+
+CRONTAB_COMMAND_SUFFIX = "2>&1"
+
+CRONJOBS = [
+    ("0,10,20,30,40,50 * * * *", "core.cron.insert_clinical_trial_information", ">> cron.log"),
+]
