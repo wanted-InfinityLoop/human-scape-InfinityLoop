@@ -1,7 +1,8 @@
 from django.urls import path
 
-from clinics.views import ClinicDetailView
+from clinics import views
 
 urlpatterns = [
-    path("/<str:clinic_id>", ClinicDetailView.as_view()),
+    path("/list", views.ClinicListView.as_view()),
+    path("/<str:clinic_id>", views.ClinicDetailView.as_view()),
 ]
