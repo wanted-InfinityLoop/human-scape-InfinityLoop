@@ -80,7 +80,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 STATIC_URL = "/static/"
 
@@ -115,5 +115,5 @@ CORS_ALLOW_HEADERS = (
 CRONTAB_COMMAND_SUFFIX = "2>&1"
 
 CRONJOBS = [
-    ("0,10,20,30,40,50 * * * *", "core.cron.insert_clinical_trial_information", ">> cron.log"),
+    ("0 0 * * *", "core.cron.insert_clinical_trial_information", ">> schedule.log"),
 ]

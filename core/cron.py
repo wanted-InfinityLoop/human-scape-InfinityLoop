@@ -75,8 +75,12 @@ def insert_clinical_trial_information():
                         print("====================")
 
             for clinic in clinic_infos:
-                if not clinic[1] and clinic[0].is_active == True:
-                    clinic[0].is_active = False
-                    clinic[0].save()
-                    print(clinic[0].id, " has soft deleted!", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-                    print("====================")
+                if clinic[0].id == data["과제번호"]:
+                    if not clinic[1] and clinic[0].is_active:
+                        clinic[0].is_active = False
+                        clinic[0].save()
+                        print(clinic[0].id, " has soft deleted!", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+                        print("====================")
+
+    print("cron job finished!", datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "\n====================")
+    
