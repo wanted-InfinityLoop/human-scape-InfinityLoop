@@ -53,19 +53,21 @@
 - 구현 기능
 
   - 임상정보를 수집하는 batch task
-    - 참고: https://www.data.go.kr/data/3074271/fileData.do#/API 목록/GETuddi%3Acfc19dda-6f75-4c57-86a8-bb9c8b103887
 
-- 수집한 임상정보에 대한 API
-  - 특정 임상정보 읽기(키 값은 자유)
+    - 참고: [공공데이터 포털 페이지](https://www.data.go.kr/data/3074271/fileData.do#/API목록/GETuddi%3Acfc19dda-6f75-4c57-86a8-bb9c8b103887)
 
-- 수집한 임상정보 리스트 API
-  - 최근 일주일내에 업데이트(변경사항이 있는) 된 임상정보 리스트
-    - pagination 기능
+  - 수집한 임상정보에 대한 API
+
+    - 특정 임상정보 읽기(키 값은 자유)
+
+  - 수집한 임상정보 리스트 API
+    - 최근 일주일내에 업데이트(변경사항이 있는) 된 임상정보 리스트
+      - pagination 기능
 
 ### **[ 가산점 ]**
 
-- Unit test의 구현 ✔️
-- 배포하여 웹에서 사용 할 수 있도록 제공 ✔️
+- Unit test의 구현
+- 배포하여 웹에서 사용 할 수 있도록 제공
 - 임상정보 검색 API 제공
 
 <br>
@@ -80,17 +82,17 @@ API URL : http://18.216.91.118:8000
 
 # ⚒️ 기술 환경 및 tools
 
-- Back-End: Python 3.9.7, Django 3.2.9
-- Database: Sqlite3
-- Deploy: AWS EC2
-- ETC: Git, Github, Postman
+- Back-End: `Python 3.9.7`, `Django 3.2.9`
+- Database: `Sqlite3`
+- Deploy: `AWS EC2`
+- ETC: `Git`, `Github`, `Postman`
 
 <br>
 <br>
 
 # 📋 모델링 ERD
 
-[Aquerytool URL]( https://aquerytool.com/aquerymain/index/?rurl=dde567a2-e41b-431c-b323-05e75d42c47c&)  
+[Aquerytool URL](https://aquerytool.com/aquerymain/index/?rurl=dde567a2-e41b-431c-b323-05e75d42c47c&)  
 Password : dm612s
 
 ![db](https://user-images.githubusercontent.com/77820352/141988846-fef565eb-b6cb-4e97-b71d-bf2608c56f2d.png)
@@ -143,22 +145,24 @@ Password : dm612s
 
 ### 👉 임상정보를 수집하는 batch task
 
-1. my_settings.py에 OPEN_API_KEY라고 키를 정의하여, 공공 API를 호출합니다.
+1. `my_settings.py`에 `OPEN_API_KEY`라고 키를 정의하여, 공공 API를 호출합니다.
 2. 매일 자정에 크론잡이 활성화됩니다.
-3. python manage.py crontab add 명령어로 크론잡을 활성화합니다.
-4. python manage.py crontab show 명령어로 크론잡의 목록을 확인합니다.
-5. python manage.py crontab remove 명령어로 크론잡의 목록을 삭제합니다.
+3. `python manage.py crontab add` 명령어로 크론잡을 활성화합니다.
+4. `python manage.py crontab show` 명령어로 크론잡의 목록을 확인합니다.
+5. `python manage.py crontab remove` 명령어로 크론잡의 목록을 삭제합니다.
+
+<br>
 
 ### 👉 임상 정보 상세 조회 API
 
-1. path parameter에 해당하는 임상 정보를 출력합니다.
+1. `path parameter`에 해당하는 임상 정보를 출력합니다.
 2. 해당하는 임상 정보가 없으면 데이터가 없다는 메시지를 반환합니다.
-3. is_active라는 필드를 두어 False 이면 삭제된 데이터라고 간주하고 보여주지 않습니다.
+3. `is_active`라는 필드를 두어 `False` 이면 삭제된 데이터라고 간주하고 보여주지 않습니다.
 
 - Method: GET
 
 ```
-http://18.216.91.118:8000/clinics/C130010
+http://18.216.91.118:8000/clinics/C160045
 ```
 
 - parameter : path_parameter
@@ -167,17 +171,30 @@ http://18.216.91.118:8000/clinics/C130010
 
 ```
 {
-
+  "data": {
+    "name": "만성뇌혈관질환 바이오뱅크 컨소시엄 운영사업",
+    "id": "C160045",
+    "duration": "5년",
+    "scope": "국내다기관",
+    "type": "기타",
+    "institution": null,
+    "trial": "",
+    "subjects": 765,
+    "department": "Psychiatry",
+    "updated_at": "2021-11-16 22:09:04"
+  }
 }
-  
+
 ```
 
-### 👉 임상 정보 리스트 API
+<br>
 
-1. query_parameter에서 가져온 페이지에 해당하는 일주일 이내 갱신된 임상 정보의 리스트를 출력합니다.
+### 👉 임상 정보 목록 API
+
+1. `query_parameter`에서 가져온 페이지에 해당하는 일주일 이내 갱신된 임상 정보의 리스트를 출력합니다.
 2. 기본적으로 한 페이지에 10개의 임상정보를 출력합니다.
-2. 일주일 이내 갱신된 임상 정보가 없고, is_active가 False 이면 데이터가 없다는 메시지를 반환합니다.
-3. is_active라는 필드를 두어 False 이면 삭제된 데이터라고 간주하고 보여주지 않습니다.
+3. 일주일 이내 갱신된 임상 정보가 없고, `is_active`가 `False` 이면 데이터가 없다는 메시지를 반환합니다.
+4. `is_active`라는 필드를 두어 `False` 이면 삭제된 데이터라고 간주하고 보여주지 않습니다.
 
 - Method: GET
 
@@ -191,8 +208,80 @@ http://18.216.91.118:8000/clinics/list?page=1
 
 ```
 {
+  "result": {
+    "data": [
+      {
+        "name": "조직구증식증 임상연구 네트워크 구축 및 운영(HLH)",
+        "id": "C130010",
+        "duration": "3년",
+        "scope": "국내다기관",
+        "type": "관찰연구",
+        "institution": null,
+        "trial": "코호트",
+        "subjects": 120,
+        "department": "Pediatrics",
+        "updated_at": "2021-11-16 22:09:03"
+      },
+      {
+        "name": "대한민국 쇼그렌 증후군 코호트 구축",
+        "id": "C130011",
+        "duration": "6년",
+        "scope": "국내다기관",
+        "type": "관찰연구",
+        "institution": null,
+        "trial": "코호트",
+        "subjects": 500,
+        "department": "Rheumatology",
+        "updated_at": "2021-11-16 22:09:03"
+      },
+
+      ...
+
+      {
+        "name": "지속성외래복막투석(CAPD) 및 자동복막투석(APD) 환자의 삶의 질(QOL)을 비교하기 위한, 전향적, 다기관, 관찰연구",
+        "id": "C110004",
+        "duration": "12개월",
+        "scope": "국내다기관",
+        "type": "중재잊연구",
+        "institution": null,
+        "trial": "Phase 4",
+        "subjects": 300,
+        "department": "Nephrology",
+        "updated_at": "2021-11-16 22:09:03"
+      },
+      {
+        "name": "제2형 당뇨병 임상연구네트워크 구축사업",
+        "id": "C140014",
+        "duration": "120개월",
+        "scope": "국내다기관",
+        "type": "관찰연구",
+        "institution": null,
+        "trial": "코호트",
+        "subjects": 700,
+        "department": "Endocrinology",
+        "updated_at": "2021-11-16 22:09:03"
+      }
+    ],
+    "general_information": {
+      "count": 10,
+      "total_count": 145,
+      "page": 1,
+      "total_page": 15,
+      "per_page": 10
+    }
+  }
 }
+
 ```
+
+<br>
+
+### 👉 유닛 테스트 결과
+
+![테스트 결과](https://user-images.githubusercontent.com/77820352/142019330-04708472-ad63-419c-b6d1-2f1aab6eb54e.png)
+
+- 임상 정보 상세 조회 API, 임상 정보 목록 조회 API 테스트 진행하였습니다.
+- 각 API에 대한 성공 / 실패 테스트 진행하였습니다.
 
 <br>
 <br>
@@ -201,25 +290,27 @@ http://18.216.91.118:8000/clinics/list?page=1
 
 ### 로컬 및 테스트용
 
-1. 해당 프로젝트를 clone하고, 프로젝트로 들어간다.
+1. 해당 프로젝트를 `clone`하고, 프로젝트로 들어간다.
 
-```
+```shell
 $ git clone https://github.com/wanted-InfinityLoop/human-scape-InfinityLoop.git .
 $ cd human-scape-InfinityLoop
 ```
 
-2. 가상환경으로 miniconda를 설치한다. [Go](https://docs.conda.io/en/latest/miniconda.html)
+2. 가상환경으로 `miniconda`를 설치한다. [Go](https://docs.conda.io/en/latest/miniconda.html)
 
-```
-$ conda create -n wanted python=3.9
+```shell
+$ conda create -n humanscape python=3.9
 $ conda actvate humanscape
 ```
 
-3. 가상환경 생성 후, requirements.txt를 설치한다.
+3. 가상환경 생성 후, `requirements.txt`에 명시된 패키지를 설치한다.
+
+```shell
+$ pip install -r requirements.txt
 ```
-pip install -r requirements.txt
-```
-```
+
+```shell
 # requirements.txt
 
 bcrypt==3.2.0
@@ -231,9 +322,9 @@ requests==2.26.0
 ```
 
 4. migrate 후 로컬 서버 가동
+   > 런서버 실행을 위해 my_settings.py에서 MY_SECRET_KEY를 정의하였습니다.
 
+```shell
+$ python manage.py migrate
+$ python manage.py runserver
 ```
-python manage.py migrate
-python manage.py runserver
-```
-
