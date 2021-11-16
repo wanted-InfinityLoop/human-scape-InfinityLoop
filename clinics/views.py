@@ -8,6 +8,10 @@ class ClinicDetailView(View):
     def get(self, request, clinic_id):
         try:
             clinic = Clinic.objects.get(id=clinic_id)
+
+            if not clinic.is_active:
+                return JsonResponse({"message": "CLINIC_CAN'T_FOUND"}, status=404)
+
             data = {
                 "name": clinic.name,
                 "id": clinic.id,

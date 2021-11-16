@@ -19,6 +19,19 @@ class ClinicDetailViewTest(TestCase):
             department ="Psychiatry"
         )
 
+        Clinic.objects.create(
+            id         ="C160045",
+            name       ="만성뇌혈관질환 바이오뱅크 컨소시엄 운영사업",
+            duration   ="5년",
+            scope      ="국내다기관",
+            type       ="기타",
+            institution="아주대학교 산학협력단",
+            trial      ="",
+            subjects   ="765",
+            department ="Psychiatry",
+            is_active  = False
+        )
+
     def tearDown(self):
         Clinic.objects.all().delete()
 
@@ -48,6 +61,12 @@ class ClinicDetailViewTest(TestCase):
 
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.json(), {"message": "CLINIC_NOT_FOUND"})
+
+    def test_get_clinic_is_not_active(self):
+        response = self.client.get("/clinics/C160045")
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.json(), {"message": "CLINIC_CAN'T_FOUND"})
 
 
 class ClinicViewTest(TestCase):
