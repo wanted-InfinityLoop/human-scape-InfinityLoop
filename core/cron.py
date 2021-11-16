@@ -1,14 +1,14 @@
 from datetime import datetime
 
 from clinics.models import Clinic
-from core.openapi import OpenAPI
-from core.utils import convert_int_or_none
-from my_settings import OPEN_API_KEY
+from core.openapi   import OpenAPI
+from core.utils     import convert_int_or_none
+from my_settings    import OPEN_API_KEY
 
 
 def insert_clinical_trial_information():
-    results = OpenAPI(OPEN_API_KEY).get_clinical_trial()
-    data_list = results["data"]
+    results      = OpenAPI(OPEN_API_KEY).get_clinical_trial()
+    data_list    = results["data"]
     clinic_infos = [[clinic, False] for clinic in Clinic.objects.all()]
 
     for data in data_list:
@@ -16,13 +16,13 @@ def insert_clinical_trial_information():
             subjects = convert_int_or_none(data["전체목표연구대상자수"])
 
             Clinic.objects.create(
-                id=data["과제번호"],
-                name=data["과제명"],
-                duration=data["연구기간"],
-                scope=data["연구범위"],
-                type=data["연구종류"],
-                trial=data["임상시험단계(연구모형)"],
-                subjects=subjects,
+                id        =data["과제번호"],
+                name      =data["과제명"],
+                duration  =data["연구기간"],
+                scope     =data["연구범위"],
+                type      =data["연구종류"],
+                trial     =data["임상시험단계(연구모형)"],
+                subjects  =subjects,
                 department=data["진료과"],
             )
             print(data["과제번호"], " has created!", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
@@ -83,4 +83,3 @@ def insert_clinical_trial_information():
                         print("====================")
 
     print("cron job finished!", datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "\n====================")
-    
