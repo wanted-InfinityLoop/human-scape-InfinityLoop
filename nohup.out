@@ -310,3 +310,7 @@ Not Found: /clinics/1
 Not Found: /clinics/160045
 Not Found: /clinics/160045
 Not Found: /
+[2021-11-16 13:33:26 +0000] [5380] [CRITICAL] WORKER TIMEOUT (pid:5381)
+[2021-11-16 22:33:26 +0900] [5381] [INFO] Worker exiting (pid: 5381)
+[2021-11-16 13:33:26 +0000] [6184] [INFO] Booting worker with pid: 6184
+Not Found: /
